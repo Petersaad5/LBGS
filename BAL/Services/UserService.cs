@@ -25,6 +25,11 @@ namespace BAL.Services
         public List<User> GetUsers()
         {
             return _dapperAccess.Query<User>("usp_GetUsers", null).ToList();
-        }   
+        }
+
+        public int AddUser()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

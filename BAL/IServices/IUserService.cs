@@ -11,7 +11,7 @@ namespace BAL.IServices
     public interface IUserService
     {
         public User? GetUser(GetUserByIdRequest request);
-
         public List<User> GetUsers();
+        public int AddUser(); 
     }
 }
