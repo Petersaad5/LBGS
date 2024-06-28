@@ -1,5 +1,6 @@
 ﻿using Bank.Models;
 using Bank.Requests;
+using Common.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace BAL.IServices
     {
         public User? GetUser(GetUserByIdRequest request);
         public List<User> GetUsers();
-        public int AddUser(); 
+        public int AddUser(AddUserRequest request); 
     }
 }
