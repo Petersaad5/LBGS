@@ -18,7 +18,7 @@ namespace Bank.Controllers
         }
 
         [HttpGet("GetUser")]
-        public IActionResult GetUser([FromQuery] GetUserByIdRequest request)
+        public IActionResult GetUser([FromQuery] GetOrDeleteUserByIdRequest request)
         {
             var user = _userService.GetUser(request);
 
@@ -41,8 +41,8 @@ namespace Bank.Controllers
 
             return Ok(users);
         }
-        [HttpGet("AddUser")]
-        public IActionResult AddUser([FromQuery] AddUserRequest request)
+        [HttpPost("AddUser")]
+        public IActionResult AddUser( AddUserRequest request)
         {
             int affectedRows = _userService.AddUser(request);
 
@@ -54,14 +54,14 @@ namespace Bank.Controllers
             return Ok("User added successfully");
         }
         [HttpPut("UpdateUser")]
-        public IActionResult UpdateUser(User user)
+        public IActionResult UpdateUser(UpdateUserRequest request)
         {
-            var getUserRequest = new GetUserByIdRequest { UserId = user.Id };
+            var getUserRequest = new GetOrDeleteUserByIdRequest { UserId = request.UserId };
             if (_userService.GetUser(getUserRequest) == null)
             {
                 return NotFound();
             }
-            int affectedRows=_userService.UpdateUser(user);
+            int affectedRows=_userService.UpdateUser(request);
             if (affectedRows == 0)
             {
                 return NotFound("User not found .");
@@ -74,7 +74,7 @@ namespace Bank.Controllers
         [HttpDelete ("{id}")]
         public IActionResult DeleteUser(int id)
         {
-            var getUserRequest = new GetUserByIdRequest { UserId = id };
+            var getUserRequest = new GetOrDeleteUserByIdRequest { UserId = id };
             if (_userService.GetUser(getUserRequest) == null)
             {
                 return NotFound();

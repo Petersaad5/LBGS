@@ -11,10 +11,10 @@ namespace BAL.IServices
 {
     public interface IUserService
     {
-        public User? GetUser(GetUserByIdRequest request);
+        public User? GetUser(GetOrDeleteUserByIdRequest request);
         public List<User> GetUsers();
         public int AddUser(AddUserRequest request);
-        public int UpdateUser(User user);
+        public int UpdateUser(UpdateUserRequest request);
         public int DeleteUser(int id);
     }
 }
