@@ -13,6 +13,8 @@ namespace BAL.IServices
     {
         public User? GetUser(GetUserByIdRequest request);
         public List<User> GetUsers();
-        public int AddUser(AddUserRequest request); 
+        public int AddUser(AddUserRequest request);
+        public int UpdateUser(User user);
+        public int DeleteUser(int id);
     }
 }

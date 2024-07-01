@@ -1,4 +1,5 @@
 using BAL.IServices;
+using Bank.Models;
 using Bank.Requests;
 using Common.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,41 @@ namespace Bank.Controllers
             }
 
             return Ok("User added successfully");
+        }
+        [HttpPut("UpdateUser")]
+        public IActionResult UpdateUser(User user)
+        {
+            var getUserRequest = new GetUserByIdRequest { UserId = user.Id };
+            if (_userService.GetUser(getUserRequest) == null)
+            {
+                return NotFound();
+            }
+            int affectedRows=_userService.UpdateUser(user);
+            if (affectedRows == 0)
+            {
+                return NotFound("User not found .");
+            }
+            else
+            {
+                return Ok("User {user.name} updated successefully");
+            } 
+        }
+        [HttpDelete ("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var getUserRequest = new GetUserByIdRequest { UserId = id };
+            if (_userService.GetUser(getUserRequest) == null)
+            {
+                return NotFound();
+            }
+
+            int affectedRows =_userService.DeleteUser(id);
+
+            if (affectedRows == 0)
+            {
+                return NotFound("User not found .Could not delete");
+            }
+            return Ok("User Deleted successefully");
         }
     }
 }

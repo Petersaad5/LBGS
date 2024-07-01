@@ -4,6 +4,7 @@ using Bank.Models;
 using Bank.Requests;
 using Dapper;
 using Common.Requests;
+using Azure.Core;
 
 namespace BAL.Services
 {
@@ -39,6 +40,28 @@ namespace BAL.Services
             parameters.Add("P__LastModifiedDate", DateTime.Now);
             return _dapperAccess.Execute("usp_AddUsers", parameters);
 
+        }
+        public int UpdateUser(User user )
+        {
+            Console.WriteLine(user.UserName);
+            Console.WriteLine(user.Email);  
+            Console.WriteLine(user.Password);
+            Console.WriteLine(user.RiskTypeId);
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__Id", user.Id);
+            parameters.Add("P__Name", user.UserName);
+            parameters.Add("P__Email", user.Email);
+            parameters.Add("P__Password", user.Password);
+            parameters.Add("P__RiskTypeId", 4);
+            parameters.Add("P__LastModifiedDate", DateTime.Now);
+            return _dapperAccess.Execute("usp_UpdateUser", parameters);
+           
+        }
+        public int DeleteUser(int userId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__Id", userId);
+            return _dapperAccess.Execute("usp_DeleteUser", parameters);
         }
     }
 }
