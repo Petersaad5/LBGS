@@ -15,8 +15,8 @@ namespace Bank.Controllers
         {
             _accountService = accountService;
         }
-        [HttpGet("GetAccount")]
-        public IActionResult GetAccountById([FromQuery]GetOrDeleteAccountByIdRequest request)
+        [HttpGet("GetAccountById")]
+        public IActionResult GetAccountById([FromQuery] GetOrDeleteAccountByIdRequest request)
         {
             var account = _accountService.GetAccountById(request);
             if (account == null)
@@ -24,6 +24,32 @@ namespace Bank.Controllers
                 return NotFound();
             }
             return Ok(account);
+        }
+        [HttpGet("GetAccountsByUserId")]
+        public IActionResult GetAccountByUserId([FromQuery] GetAccountByUserIdRequest request)
+        {
+            var accounts = _accountService.GetAccountByUserId(request);
+            if (accounts.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(accounts);
+
+        }
+        [HttpPut("UpdateAccount")]
+        public IActionResult UpdateAccount(UpdateAccountRequest request)
+        {
+            var accountId = new GetOrDeleteAccountByIdRequest { Id = request.Id };
+            var account = _accountService.GetAccountById(accountId);
+            int affectedRows = _accountService.UpdateAccount(request);
+            if (account == null || affectedRows == 0)
+            {
+                return NotFound();
+            }
+            //Returning the new account
+            var updatedAccount = GetAccountById(accountId);
+            return Ok (updatedAccount);
+
         }
     }
 }
