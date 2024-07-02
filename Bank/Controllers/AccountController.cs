@@ -64,8 +64,8 @@ namespace Bank.Controllers
 
             return Ok($"Account {request.AccountNumber} added successfully");
         }
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        [HttpPut("DeactivateAccount/{id}")]
+        public IActionResult DeactivateAccount(int id)
         {
             var getAccountRequest = new GetAccountByIdRequest { Id = id };
 
@@ -73,12 +73,23 @@ namespace Bank.Controllers
             {
                 return NotFound("Account not found .Could not delete");
             }
-            int affectedRows = _accountService.DeactivateAccount(id);
-            if (affectedRows == 0)
-            {
-                return BadRequest();
-            }
-            return Ok("Account Deleted successefully");
+            _accountService.DeactivateAccount(id);
+            
+            return Ok("Account successefully Deactivated");
         }
+        [HttpPut("ActivateAccount/{id}")]
+        public IActionResult ActivateAccount(int id)
+        {
+            var getAccountRequest = new GetAccountByIdRequest { Id = id };
+
+            if (_accountService.GetAccountById(getAccountRequest) == null)
+            {
+                return NotFound("Account not found");
+            }
+            _accountService.ActivateAccount(id);
+
+            return Ok("Account successefully Activated");
+        }
+
     }
 }

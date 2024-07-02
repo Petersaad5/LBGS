@@ -57,7 +57,13 @@ namespace BAL.Services
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__Id", acId);
-            return _dapperAccess.Execute("usp_DeleteUser", parameters);
+            return _dapperAccess.Execute("usp_DeactivateAccount", parameters);
+        }
+        public int ActivateAccount(int acId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__Id", acId);
+            return _dapperAccess.Execute("usp_ActivateAccount", parameters);
         }
     }
 }

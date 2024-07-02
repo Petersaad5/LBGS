@@ -16,5 +16,6 @@ namespace BAL.IServices
         public int UpdateAccount(UpdateAccountRequest request);
         public int AddAccount(AddAccountRequest request);
         public int DeactivateAccount(int acId);
+        public int ActivateAccount(int acId);
     }
 }
