@@ -53,10 +53,10 @@ namespace BAL.Services
             return _dapperAccess.Execute("usp_UpdateUser", parameters);
            
         }
-        public int DeleteUser(int userId)
+        public int DeleteUser(int id) // could be a good idea to delete all of his accounts when we delete him 
         {
             DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("P__Id", userId);
+            parameters.Add("P__Id", id);
             return _dapperAccess.Execute("usp_DeleteUser", parameters);
         }
     }

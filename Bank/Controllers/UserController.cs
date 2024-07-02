@@ -75,16 +75,15 @@ namespace Bank.Controllers
         public IActionResult DeleteUser(int id)
         {
             var getUserRequest = new GetOrDeleteUserByIdRequest { UserId = id };
-            if (_userService.GetUser(getUserRequest) == null)
-            {
-                return NotFound();
-            }
-
-            int affectedRows =_userService.DeleteUser(id);
-
-            if (affectedRows == 0)
+            
+            if (_userService.GetUser(getUserRequest) == null )
             {
                 return NotFound("User not found .Could not delete");
+            }
+            int affectedRows = _userService.DeleteUser(id);
+            if (affectedRows == 0)
+            {
+                return BadRequest();
             }
             return Ok("User Deleted successefully");
         }

@@ -1,4 +1,6 @@
 ﻿using BAL.IServices;
+using BAL.Services;
+using Bank.Requests;
 using Common.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +51,34 @@ namespace Bank.Controllers
             //Returning the new account
             var updatedAccount = GetAccountById(accountId);
             return Ok (updatedAccount);
+        }
+        [HttpPost("AddAccount")]
+        public IActionResult AddAccount(AddAccountRequest request)
+        {
+            int affectedRows = _accountService.AddAccount(request);
 
+            if (affectedRows == 0)
+            {
+                return BadRequest($"could not add the Account{affectedRows}");
+            }
+
+            return Ok($"Account {request.AccountNumber} added successfully");
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var getAccountRequest = new GetOrDeleteAccountByIdRequest { Id = id };
+
+            if (_accountService.GetAccountById(getAccountRequest) == null)
+            {
+                return NotFound("Account not found .Could not delete");
+            }
+            int affectedRows = _accountService.DeleteAccount(id);
+            if (affectedRows == 0)
+            {
+                return BadRequest();
+            }
+            return Ok("Account Deleted successefully");
         }
     }
 }

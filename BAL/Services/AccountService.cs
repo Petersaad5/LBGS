@@ -43,5 +43,21 @@ namespace BAL.Services
 
 
         }
+        public int AddAccount(AddAccountRequest request)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__UserId", request.UserId);
+            parameters.Add("P__AccountNumber", request.AccountNumber);
+            parameters.Add("P__IsActive", request.IsActive);
+            parameters.Add("P__Balance", request.Balance);  
+            return _dapperAccess.Execute("usp_AddAccount", parameters);
+
+        }
+        public int DeleteAccount(int acId)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__Id", acId);
+            return _dapperAccess.Execute("usp_DeleteUser", parameters);
+        }
     }
 }
