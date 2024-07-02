@@ -50,6 +50,7 @@ namespace BAL.Services
             parameters.Add("P__Password", request.Password);
             parameters.Add("P__RiskTypeId", request.RiskTypeId);
             parameters.Add("P__LastModifiedDate", DateTime.Now);
+            parameters.Add("P__IsActive",request.IsActive);
             return _dapperAccess.Execute("usp_UpdateUser", parameters);
            
         }
@@ -59,6 +60,12 @@ namespace BAL.Services
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__Id", id);
             return _dapperAccess.Execute("usp_DeactivateUser", parameters);
+        }
+        public int ActivateUser(int id)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__Id", id);
+            return _dapperAccess.Execute("usp_ActivateUser", parameters);
         }
     }
 }

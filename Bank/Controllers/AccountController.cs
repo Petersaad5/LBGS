@@ -73,7 +73,7 @@ namespace Bank.Controllers
             {
                 return NotFound("Account not found .Could not delete");
             }
-            int affectedRows = _accountService.DeleteAccount(id);
+            int affectedRows = _accountService.DeactivateAccount(id);
             if (affectedRows == 0)
             {
                 return BadRequest();

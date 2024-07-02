@@ -13,6 +13,7 @@ namespace Common.Requests
         public string? Email { get; set; }=null ;
         public string? Password { get; set; }= null ;
         public int RiskTypeId { get; set; } 
+        public bool IsActive { get; set; }
 
 
     }

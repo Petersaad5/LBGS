@@ -89,5 +89,21 @@ namespace Bank.Controllers
 
             return Ok("User was successefully Deactivated");
         }
+        [HttpPut("ActivateUser/{id}")]
+        public IActionResult ActivateUser(int id)
+        {
+            var getUserRequest = new GetUserByIdRequest { UserId = id };
+
+            User? user = _userService.GetUser(getUserRequest);
+
+            if (user == null)
+            {
+                return BadRequest("User was not found");
+            }
+
+            _userService.ActivateUser(id);
+
+            return Ok("User was successefully Activated");
+        }
     }
 }

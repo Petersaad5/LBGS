@@ -15,6 +15,6 @@ namespace BAL.IServices
         public List<Account> GetAccountByUserId(GetUserByIdRequest request);
         public int UpdateAccount(UpdateAccountRequest request);
         public int AddAccount(AddAccountRequest request);
-        public int DeleteAccount(int acId);
+        public int DeactivateAccount(int acId);
     }
 }

@@ -16,5 +16,6 @@ namespace BAL.IServices
         public int AddUser(AddUserRequest request);
         public int UpdateUser(UpdateUserRequest request);
         public int DeactiveUser(int id);
+        public int ActivateUser(int id);
     }
 }
