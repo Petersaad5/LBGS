@@ -18,14 +18,14 @@ namespace BAL.Services
         {
             _dapperAccess = dapperAccess;
         }
-        public Account? GetAccountById(GetOrDeleteAccountByIdRequest request)
+        public Account? GetAccountById(GetAccountByIdRequest request)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__Id", request.Id);
             return _dapperAccess.Query<Account>("usp_GetAccountById", parameters).FirstOrDefault();
         }
 
-        public List<Account> GetAccountByUserId(GetAccountByUserIdRequest request)
+        public List<Account> GetAccountByUserId(GetUserByIdRequest request)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__UserId", request.UserId);

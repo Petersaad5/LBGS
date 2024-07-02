@@ -16,7 +16,7 @@ namespace BAL.Services
             _dapperAccess = dapperAccess;
         }
 
-        public User? GetUser(GetOrDeleteUserByIdRequest request) 
+        public User? GetUser(GetUserByIdRequest request) 
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__Id", request.UserId);
@@ -41,7 +41,7 @@ namespace BAL.Services
             return _dapperAccess.Execute("usp_AddUsers", parameters);
 
         }
-        public int UpdateUser(UpdateUserRequest request )// Porblem : changes everything not only what actually changes !!!
+        public int UpdateUser(UpdateUserRequest request )
         { 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__Id", request.UserId);
@@ -53,11 +53,12 @@ namespace BAL.Services
             return _dapperAccess.Execute("usp_UpdateUser", parameters);
            
         }
-        public int DeleteUser(int id) // could be a good idea to delete all of his accounts when we delete him 
+        
+        public int DeactiveUser(int id)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("P__Id", id);
-            return _dapperAccess.Execute("usp_DeleteUser", parameters);
+            return _dapperAccess.Execute("usp_DeactivateUser", parameters);
         }
     }
 }

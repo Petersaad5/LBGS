@@ -18,7 +18,7 @@ namespace Bank.Controllers
             _accountService = accountService;
         }
         [HttpGet("GetAccountById")]
-        public IActionResult GetAccountById([FromQuery] GetOrDeleteAccountByIdRequest request)
+        public IActionResult GetAccountById([FromQuery] GetAccountByIdRequest request)
         {
             var account = _accountService.GetAccountById(request);
             if (account == null)
@@ -28,7 +28,7 @@ namespace Bank.Controllers
             return Ok(account);
         }
         [HttpGet("GetAccountsByUserId")]
-        public IActionResult GetAccountByUserId([FromQuery] GetAccountByUserIdRequest request)
+        public IActionResult GetAccountByUserId([FromQuery] GetUserByIdRequest request)
         {
             var accounts = _accountService.GetAccountByUserId(request);
             if (accounts.Count == 0)
@@ -41,7 +41,7 @@ namespace Bank.Controllers
         [HttpPut("UpdateAccount")]
         public IActionResult UpdateAccount(UpdateAccountRequest request)
         {
-            var accountId = new GetOrDeleteAccountByIdRequest { Id = request.Id };
+            var accountId = new GetAccountByIdRequest { Id = request.Id };
             var account = _accountService.GetAccountById(accountId);
             int affectedRows = _accountService.UpdateAccount(request);
             if (account == null || affectedRows == 0)
@@ -67,7 +67,7 @@ namespace Bank.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
-            var getAccountRequest = new GetOrDeleteAccountByIdRequest { Id = id };
+            var getAccountRequest = new GetAccountByIdRequest { Id = id };
 
             if (_accountService.GetAccountById(getAccountRequest) == null)
             {

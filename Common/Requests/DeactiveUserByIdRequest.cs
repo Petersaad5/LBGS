@@ -2,7 +2,7 @@
 
 namespace Bank.Requests
 {
-    public class GetOrDeleteUserByIdRequest
+    public class DeactiveUserByIdRequest
     {
         [Required]
         public int UserId { get; set; }

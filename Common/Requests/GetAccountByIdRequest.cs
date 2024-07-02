@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common.Requests
 {
-    public class GetAccountByUserIdRequest
+    public class GetAccountByIdRequest
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
     }
 }

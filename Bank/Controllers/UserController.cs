@@ -18,7 +18,7 @@ namespace Bank.Controllers
         }
 
         [HttpGet("GetUser")]
-        public IActionResult GetUser([FromQuery] GetOrDeleteUserByIdRequest request)
+        public IActionResult GetUser([FromQuery] GetUserByIdRequest request)
         {
             var user = _userService.GetUser(request);
 
@@ -29,6 +29,7 @@ namespace Bank.Controllers
 
             return Ok(user);
         }
+
         [HttpGet("GetUsers")]
         public IActionResult GetUsers()
         {
@@ -41,51 +42,52 @@ namespace Bank.Controllers
 
             return Ok(users);
         }
+
         [HttpPost("AddUser")]
-        public IActionResult AddUser( AddUserRequest request)
+        public IActionResult AddUser(AddUserRequest request)
         {
             int affectedRows = _userService.AddUser(request);
 
             if (affectedRows == 0)
             {
-                return BadRequest("could not add the user{affectedRows}" );
+                return BadRequest("could not add the user{affectedRows}");
             }
 
             return Ok("User added successfully");
         }
+
         [HttpPut("UpdateUser")]
         public IActionResult UpdateUser(UpdateUserRequest request)
         {
-            var getUserRequest = new GetOrDeleteUserByIdRequest { UserId = request.UserId };
-            if (_userService.GetUser(getUserRequest) == null)
+            var getUserRequest = new GetUserByIdRequest { UserId = request.UserId };
+
+            var user = _userService.GetUser(getUserRequest);
+
+            if (user == null)
             {
-                return NotFound();
+                return BadRequest("User was not found");
             }
-            int affectedRows=_userService.UpdateUser(request);
-            if (affectedRows == 0)
-            {
-                return NotFound("User not found .");
-            }
-            else
-            {
-                return Ok("User {user.name} updated successefully");
-            } 
+
+            _userService.UpdateUser(request);
+
+            return Ok("User was successfully updated");
         }
-        [HttpDelete ("{id}")]
-        public IActionResult DeleteUser(int id)
+
+        [HttpPut("DeactivateUser/{id}")]
+        public IActionResult DeactivateUser(int id)
         {
-            var getUserRequest = new GetOrDeleteUserByIdRequest { UserId = id };
-            
-            if (_userService.GetUser(getUserRequest) == null )
+            var getUserRequest = new GetUserByIdRequest { UserId = id };
+
+            User? user = _userService.GetUser(getUserRequest);
+
+            if (user == null)
             {
-                return NotFound("User not found .Could not delete");
+                return BadRequest("User was not found");
             }
-            int affectedRows = _userService.DeleteUser(id);
-            if (affectedRows == 0)
-            {
-                return BadRequest();
-            }
-            return Ok("User Deleted successefully");
+
+            _userService.DeactiveUser(id);
+
+            return Ok("User was successefully Deactivated");
         }
     }
 }

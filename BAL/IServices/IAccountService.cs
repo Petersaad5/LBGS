@@ -11,12 +11,10 @@ namespace BAL.IServices
 {
     public interface IAccountService
     {
-        public Account? GetAccountById(GetOrDeleteAccountByIdRequest request);
-        public List<Account> GetAccountByUserId(GetAccountByUserIdRequest request);
+        public Account? GetAccountById(GetAccountByIdRequest request);
+        public List<Account> GetAccountByUserId(GetUserByIdRequest request);
         public int UpdateAccount(UpdateAccountRequest request);
         public int AddAccount(AddAccountRequest request);
         public int DeleteAccount(int acId);
-        // public int Updateaccount(UpdateAccountRequest request);
-        //public int Deleteaccount(int id); Idea make this function render the account inactive and not deleted 
     }
 }
