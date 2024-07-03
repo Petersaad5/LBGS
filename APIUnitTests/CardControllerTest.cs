@@ -61,10 +61,10 @@ namespace APIUnitTests
             // Arrange
             var request = new GetAccountByIdRequest { Id = 123 };
             var expectedCards = new List<Card>
-     {
-         new Card { Id = 1, AccountId = 123, CardNumber = "1234567812345678", IsActive = true },
-         new Card { Id = 2, AccountId = 123, CardNumber = "8765432187654321", IsActive = true }
-     };
+            {
+                new Card { Id = 1, AccountId = 123, CardNumber = "1234567812345678", IsActive = true },
+                new Card { Id = 2, AccountId = 123, CardNumber = "8765432187654321", IsActive = true }
+            };
             _mockCardService.Setup(service => service.GetCardByAccountId(request)).Returns(expectedCards);
 
             // Act
