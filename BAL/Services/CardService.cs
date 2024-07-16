@@ -27,6 +27,12 @@ namespace BAL.Services
             parameters.Add("P__Id", request.Id);
             return _dapperAccess.Query<Card>("usp_GetCardById", parameters).FirstOrDefault();
         }
+        public Card? GetCardByNumber(GetCardByNumberRequest request)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__CardNumber", request.CardNumber);
+            return _dapperAccess.Query<Card>("usp_GetCardByNumber", parameters).FirstOrDefault();
+        }
         public List<Card> GetCardByAccountId(GetAccountByIdRequest request)
         {
             DynamicParameters parameters = new DynamicParameters();

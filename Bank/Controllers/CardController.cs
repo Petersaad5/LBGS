@@ -25,6 +25,16 @@ namespace Bank.Controllers
             }
             return Ok(card);
         }
+        [HttpGet("GetCardByNumber")]
+        public IActionResult GetAccountByNumber([FromQuery] GetCardByNumberRequest request)
+        {
+            var card = _cardService.GetCardByNumber(request);
+            if (card == null)
+            {
+                return NotFound();
+            }
+            return Ok(card);
+        }
         [HttpGet("GetCardsByAccountId")]
         public IActionResult GetAccountByUserId([FromQuery] GetAccountByIdRequest request)
         {

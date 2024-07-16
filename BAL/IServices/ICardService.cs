@@ -11,6 +11,7 @@ namespace BAL.IServices
     public interface ICardService
     {
         public Card? GetCardById(GetCardByIdRequest request);
+        public Card? GetCardByNumber(GetCardByNumberRequest request);
         public List<Card> GetCardByAccountId(GetAccountByIdRequest request);
         public int UpdateCard(UpdateCardRequest request);
         public int AddCard(AddCardRequest request);

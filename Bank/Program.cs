@@ -11,6 +11,8 @@ builder.Services.AddScoped<DapperAccess>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddScoped<IAtmService, AtmService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
