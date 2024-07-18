@@ -14,5 +14,6 @@ namespace Common.Responses
         public int AccountId { get; set; }
         public int AccountNumber { get; set; }
         public decimal balance { get; set; }
+        public string CardNumber { get; set; }=string.Empty;
     }
 }

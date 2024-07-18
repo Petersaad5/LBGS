@@ -1,4 +1,5 @@
 ﻿using BAL.IServices;
+using BAL.Services;
 using Bank.Models;
 using Common.Requests;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,17 @@ namespace Bank.Controllers
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpGet("GetAtmProfile")]
+        public IActionResult GetAccountByNumber([FromQuery] GetCardByNumberRequest request)
+        {
+            var atmProfileResponse = _atmService.GetAtmProfile(request);
+            if (atmProfileResponse == null)
+            {
+                return NotFound();
+            }
+            return Ok(atmProfileResponse);
         }
     }
 }
