@@ -69,6 +69,20 @@ namespace Bank.Controllers
             }
             return Ok(atmProfileResponse);
         }
+        [HttpPut("DepositOrWithdraw")]
+        public IActionResult DepositOrWithdraw(WithdrawOrDepositRequest request)
+        {
+            var cardNumber =request.cardNumber;
+            decimal affectedBalance = _atmService.withdrawOrDeposit(request);
+            if ( affectedBalance == 0)
+            {
+                return BadRequest("Transaction failed please try again");
+            }
+            //Returning the new account
+            
+            return Ok(affectedBalance);
+        }
+
     }
 }
 

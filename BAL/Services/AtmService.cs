@@ -69,6 +69,36 @@ namespace BAL.Services
             return profile;
 
         }
+        public decimal withdrawOrDeposit(WithdrawOrDepositRequest request) // TODO: make it a transaction and add expiry date validation
+        {
+            GetCardByNumberRequest getCard =new GetCardByNumberRequest { CardNumber = request.cardNumber };
+            Card? card = _cardService.GetCardByNumber(getCard);
+            if (card == null )
+            {
+                return 0;
+                throw new Exception("Could not conplete the transaction card not found ");
+                
+            }
+            GetAccountByIdRequest getAccountByIdRequest = new GetAccountByIdRequest { Id = card.AccountId };
+            Account? account = _accountService.GetAccountById(getAccountByIdRequest);
+            decimal newBalance = account.Balance +  request.amount;
+            if (newBalance < 0 || !card.IsActive )
+            {
+                return 0;
+            }
+            UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest
+            {
+                Id = account.Id,
+                AccountNumber = account.AccountNumber,
+                UsertId = account.UserId,
+                IsActive = account.IsActive,
+                Balance = newBalance,
+            };
+            _accountService.UpdateAccount(updateAccountRequest);
+            return newBalance;
+
+            
+        }
 
     }
 }
