@@ -1,15 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BAL.Services;
-using DAL;
+﻿using BAL.Services;
+using Bank.Controllers;
 using Bank.Models;
 using Common.Requests;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using Dapper;
-using System.IO;
-using Bank.Controllers;
+using DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace ServiceUnitTests
 {
@@ -34,7 +29,7 @@ namespace ServiceUnitTests
             // Initialize DapperAccess with the configuration
             _dapperAccess = new DapperAccess(configuration);
             _cardService = new CardService(_dapperAccess);
-            _controller =new CardController(_cardService);
+            _controller = new CardController(_cardService);
         }
 
         [TestMethod]
@@ -69,7 +64,7 @@ namespace ServiceUnitTests
             Assert.AreEqual(expectedCard.CSV, returnedCard.CSV);
             Assert.AreEqual(expectedCard.EmbossedName, returnedCard.EmbossedName);
             Assert.AreEqual(expectedCard.IsActive, returnedCard.IsActive);
-            
+
         }
 
         [TestMethod]

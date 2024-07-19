@@ -14,8 +14,8 @@ namespace ServiceUnitTests
     [TestClass]
     public class CardServiceTest
     {
-        private CardService _cardService;
-        private DapperAccess _dapperAccess;
+        private CardService? _cardService;
+        private DapperAccess? _dapperAccess;
 
         [TestInitialize]
         public void Setup()
@@ -67,7 +67,7 @@ namespace ServiceUnitTests
         public void GetCardById_CardDoesNotExist_ReturnsNull()
         {
             // Arrange
-            var request = new GetCardByIdRequest { Id = 9999 }; // Ensure this ID does not exist in your test data
+            var request = new GetCardByIdRequest { Id = 9999 }; 
 
             // Act
             var result = _cardService.GetCardById(request);
