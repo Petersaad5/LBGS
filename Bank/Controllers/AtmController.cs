@@ -74,12 +74,23 @@ namespace Bank.Controllers
         {
             var cardNumber =request.cardNumber;
             decimal affectedBalance = _atmService.withdrawOrDeposit(request);
-            if ( affectedBalance == 0)
+            if ( affectedBalance == -1)
             {
                 return BadRequest("Transaction failed please try again");
             }
             //Returning the new account
             
+            return Ok(affectedBalance);
+        }
+        [HttpPut("MoneyTransfer")]
+        public IActionResult MoneyTransfer(MoneyTransferRequest request)
+        {
+            var cardNumber = request.CardNumber;
+            decimal affectedBalance = _atmService.moneyTransfer(request);
+            if (affectedBalance <0)
+            {
+                return BadRequest("Transaction failed please try again");
+            }
             return Ok(affectedBalance);
         }
 

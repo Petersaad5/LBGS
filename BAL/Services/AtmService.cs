@@ -75,16 +75,16 @@ namespace BAL.Services
             Card? card = _cardService.GetCardByNumber(getCard);
             if (card == null )
             {
-                return 0;
+                return -1;
                 throw new Exception("Could not conplete the transaction card not found ");
                 
             }
             GetAccountByIdRequest getAccountByIdRequest = new GetAccountByIdRequest { Id = card.AccountId };
             Account? account = _accountService.GetAccountById(getAccountByIdRequest);
-            decimal newBalance = account.Balance +  request.amount;
+            decimal newBalance = account.Balance -  request.amount;
             if (newBalance < 0 || !card.IsActive )
             {
-                return 0;
+                return -1;
             }
             UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest
             {
@@ -98,6 +98,49 @@ namespace BAL.Services
             return newBalance;
 
             
+        }
+        public decimal moneyTransfer(MoneyTransferRequest request)
+        {
+            GetCardByNumberRequest getCard = new GetCardByNumberRequest { CardNumber = request.CardNumber };
+            Card? card = _cardService.GetCardByNumber(getCard);
+            if (card == null)
+            {
+                return -1;
+                throw new Exception("Could not conplete the transaction card not found ");
+            }
+            GetAccountByIdRequest getSenderRequest = new GetAccountByIdRequest { Id = card.AccountId };
+            GetAccountByAccountNumberRequest getReceiverRequest = new GetAccountByAccountNumberRequest { accountNumber = request.AccountNumber };
+            Account? senderAccount = _accountService.GetAccountById(getSenderRequest);
+            Account? receiverAccount = _accountService.GetAccountByNumber(getReceiverRequest);
+            if (receiverAccount == null || senderAccount==null)
+            {
+                return -2;
+                throw new Exception("No account found with this number");
+            }
+            decimal newSenderBalance = senderAccount.Balance - request.ammount;
+            UpdateAccountRequest updateSenderAccountRequest = new UpdateAccountRequest
+            {
+                Id = senderAccount.Id,
+                AccountNumber = senderAccount.AccountNumber,
+                UsertId = senderAccount.UserId,
+                IsActive = senderAccount.IsActive,
+                Balance = newSenderBalance,
+            };
+            _accountService.UpdateAccount(updateSenderAccountRequest);
+            decimal newReceiverBalance = receiverAccount.Balance + request.ammount;
+            UpdateAccountRequest updateReceiverAccountRequest = new UpdateAccountRequest
+            {
+                Id = receiverAccount.Id,
+                AccountNumber = receiverAccount.AccountNumber,
+                UsertId = receiverAccount.UserId,
+                IsActive = receiverAccount.IsActive,
+                Balance = newReceiverBalance,
+            };
+            _accountService.UpdateAccount(updateReceiverAccountRequest);
+
+
+            return newSenderBalance;
+
         }
 
     }

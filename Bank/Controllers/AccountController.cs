@@ -27,6 +27,16 @@ namespace Bank.Controllers
             }
             return Ok(account);
         }
+        [HttpGet("GetAccountByNumber")]
+        public IActionResult GetAccountByNumber([FromQuery] GetAccountByAccountNumberRequest request)
+        {
+            var account = _accountService.GetAccountByNumber(request);
+            if (account == null)
+            {
+                return NotFound();
+            }
+            return Ok(account);
+        }
         [HttpGet("GetAccountsByUserId")]
         public IActionResult GetAccountByUserId([FromQuery] GetUserByIdRequest request)
         {

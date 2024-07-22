@@ -24,6 +24,12 @@ namespace BAL.Services
             parameters.Add("P__Id", request.Id);
             return _dapperAccess.Query<Account>("usp_GetAccountById", parameters).FirstOrDefault();
         }
+        public Account? GetAccountByNumber (GetAccountByAccountNumberRequest request)
+        {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("P__AccountNumber",request.accountNumber);
+            return _dapperAccess.Query<Account>("usp_GetAccountByNumber", parameters).FirstOrDefault();
+        }
 
         public List<Account> GetAccountByUserId(GetUserByIdRequest request)
         {

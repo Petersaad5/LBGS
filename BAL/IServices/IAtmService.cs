@@ -9,5 +9,6 @@ namespace BAL.IServices
         public Card? AtmCardLogin(AtmLoginRequest request);
         public AtmProfileResponse? GetAtmProfile(GetCardByNumberRequest request);
         public decimal withdrawOrDeposit(WithdrawOrDepositRequest request);
+        public decimal moneyTransfer(MoneyTransferRequest request);
     }
 }
