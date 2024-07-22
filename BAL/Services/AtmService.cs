@@ -81,7 +81,7 @@ namespace BAL.Services
             }
             GetAccountByIdRequest getAccountByIdRequest = new GetAccountByIdRequest { Id = card.AccountId };
             Account? account = _accountService.GetAccountById(getAccountByIdRequest);
-            decimal newBalance = account.Balance -  request.amount;
+            decimal newBalance = account.Balance +  request.amount;
             if (newBalance < 0 || !card.IsActive )
             {
                 return -1;

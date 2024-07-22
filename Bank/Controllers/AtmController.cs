@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Bank.Controllers
 {
@@ -76,21 +77,27 @@ namespace Bank.Controllers
             decimal affectedBalance = _atmService.withdrawOrDeposit(request);
             if ( affectedBalance == -1)
             {
-                return BadRequest("Transaction failed please try again");
+                return BadRequest("Transaction failed please try again ");
             }
             //Returning the new account
             
             return Ok(affectedBalance);
         }
         [HttpPut("MoneyTransfer")]
-        public IActionResult MoneyTransfer(MoneyTransferRequest request)
+        public IActionResult MoneyTransfer([FromBody]MoneyTransferRequest request)
         {
             var cardNumber = request.CardNumber;
             decimal affectedBalance = _atmService.moneyTransfer(request);
-            if (affectedBalance <0)
+            if (affectedBalance == -1)
             {
-                return BadRequest("Transaction failed please try again");
+                return BadRequest("Transaction failed please try again Card not found");
             }
+            if (affectedBalance == -2)
+            {
+                Console.WriteLine($"account");
+                return BadRequest("Transaction failed please try again account not found");
+            }
+
             return Ok(affectedBalance);
         }
 
