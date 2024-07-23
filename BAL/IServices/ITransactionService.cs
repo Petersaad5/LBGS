@@ -1,4 +1,5 @@
-﻿using DAL.Models;
+﻿using Common.Requests;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BAL.IServices
 {
     public interface ITransactionService
     {
-        public List<Transaction> GetTransactions();
+        public List<Transaction> GetTransactions(GetTransactionsByAccountRequest request);
+        public int AddTransaction(AddTransactionRequest request);
     }
 }

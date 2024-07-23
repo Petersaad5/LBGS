@@ -18,13 +18,15 @@ namespace BAL.Services
         private readonly ICardService _cardService;
         public readonly IAccountService _accountService;
         public readonly IUserService _userService;
+        public readonly ITransactionService _transactionService;
 
-        public AtmService(DapperAccess dapperAccess, ICardService cardService, IUserService userService, IAccountService accountService)
+        public AtmService(DapperAccess dapperAccess, ICardService cardService, IUserService userService, IAccountService accountService, ITransactionService transactionService)
         {
             _dapperAccess = dapperAccess;
             _cardService = cardService;
             _accountService = accountService;
             _userService = userService;
+            _transactionService = transactionService;
         }
 
 
@@ -71,21 +73,25 @@ namespace BAL.Services
         }
         public decimal withdrawOrDeposit(WithdrawOrDepositRequest request) // TODO: make it a transaction and add expiry date validation
         {
-            GetCardByNumberRequest getCard =new GetCardByNumberRequest { CardNumber = request.cardNumber };
+            GetCardByNumberRequest getCard = new GetCardByNumberRequest { CardNumber = request.cardNumber };
             Card? card = _cardService.GetCardByNumber(getCard);
-            if (card == null )
+
+            if (card == null)
             {
                 return -1;
-                throw new Exception("Could not conplete the transaction card not found ");
-                
+                throw new Exception("Could not complete the transaction: card not found");
             }
+
             GetAccountByIdRequest getAccountByIdRequest = new GetAccountByIdRequest { Id = card.AccountId };
             Account? account = _accountService.GetAccountById(getAccountByIdRequest);
-            decimal newBalance = account.Balance +  request.amount;
-            if (newBalance < 0 || !card.IsActive )
+
+            decimal newBalance = account.Balance + request.amount;
+
+            if (newBalance < 0 || !card.IsActive)
             {
                 return -1;
             }
+
             UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest
             {
                 Id = account.Id,
@@ -94,11 +100,22 @@ namespace BAL.Services
                 IsActive = account.IsActive,
                 Balance = newBalance,
             };
-            _accountService.UpdateAccount(updateAccountRequest);
-            return newBalance;
 
-            
+            AddTransactionRequest transaction = new AddTransactionRequest
+            {
+                FromAccount = account.AccountNumber,
+                ToAccount = account.AccountNumber,
+                CardNumber = card.CardNumber,
+                Amount = Math.Abs(request.amount),
+                TransactionType = request.amount >= 0 ? "Deposit" : "Withdrawal"
+            };
+
+            _accountService.UpdateAccount(updateAccountRequest);
+            _transactionService.AddTransaction(transaction);
+
+            return newBalance;
         }
+
         public decimal moneyTransfer(MoneyTransferRequest request)
         {
             GetCardByNumberRequest getCard = new GetCardByNumberRequest { CardNumber = request.CardNumber };
@@ -117,6 +134,15 @@ namespace BAL.Services
                 return -2;
                 throw new Exception("No account found with this number");
             }
+            AddTransactionRequest senderTransaction = new AddTransactionRequest
+            {
+                FromAccount = senderAccount.AccountNumber,
+                ToAccount = receiverAccount.AccountNumber,
+                CardNumber = card.CardNumber,
+                Amount = Math.Abs(request.ammount),
+                TransactionType = "Transfer"
+            };
+            _transactionService.AddTransaction(senderTransaction);
             decimal newSenderBalance = senderAccount.Balance - request.ammount;
             UpdateAccountRequest updateSenderAccountRequest = new UpdateAccountRequest
             {
